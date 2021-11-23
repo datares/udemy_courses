@@ -1,0 +1,31 @@
+---
+title: "Udemy"
+author: "Kayla Teng"
+date: "10/27/2021"
+output: html_document
+---
+
+```{r}
+setwd("C:/Users/kayla/Documents/DataRes")
+Udemy <- read.csv("Udemy_Course_Details.csv")
+Udemy$duration <- lapply(Udemy$duration, as.integer)
+```
+
+```{r, fig.width=12}
+Udemytop10 <- head(Udemy[order(Udemy$subscribers, decreasing = TRUE), ], 10)
+Udemytop10plot <- Udemytop10[ ,c(2,6,11)]
+library(ggplot2)
+library(scales)
+ggplot(Udemytop10plot, aes(x=reorder(title, subscribers), y=subscribers, fill = subject)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() + ggtitle("Top 10 Udemy Courses with Most Subscribers") + xlab("Udemy Course Title") +ylab("Number of Subscribers") + scale_y_continuous(labels = comma, limits = c(0, 300000), breaks = seq(0, 300000, by = 100000)) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) + geom_text(aes(label = scales :: comma(subscribers)), hjust = -0.1, colour = "black") + scale_fill_manual(values = c("#f38d00", "#bf2412")) +labs(fill = "Subject")
+```
+
+```{r, fig.width=10}
+library(ggplot2)
+library(scales)
+Udemymorethan9999 <- Udemy[!(Udemy$subscribers < 10000), ]
+ggplot(Udemymorethan9999, aes(price, subscribers, colour = subject)) + geom_point() +xlab("Price of Course") + ylab("Number of Subscribers") + scale_y_continuous(labels = comma, limits = c(0, 300000), breaks = seq(0, 300000, by = 50000)) + ggtitle("Price vs. Number of Subscribers for Courses with 10,000+ Subscribers")+labs(color = 'Subject') + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) + scale_color_manual(values = c("#39a1ce", "#2c8f76", "#f38d00", "#bf2412"))
+```
