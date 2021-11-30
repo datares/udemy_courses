@@ -1,0 +1,40 @@
+---
+title: "Datares fall 2021 working version"
+author: "Samantha Chung"
+date: "11/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+online_course <- read.csv("Udemy_Course_Details.csv")
+head(online_course)
+
+paid_courses_df <- online_course[online_course$paid==TRUE,]
+unpaid_courses_df <- online_course[online_course$paid==FALSE,]
+
+
+subscribers_paid <- paid_courses_df$subscribers
+hist(subscribers_paid, col= "red", xlab = "Number of subscribers", ylab = "Frequency (number of courses with this number of subscribers)", main = "Histogram of subscribers for paid vs unpaid", xlim = c(0,40000),breaks = 20)
+
+subscribers_unpaid <- unpaid_courses_df$subscribers
+hist(subscribers_unpaid, col = "blue", add = TRUE)
+legend("topright", c("Paid","Unpaid"), fill= c("red","blue"))
+
+
+#### Reviews
+
+reviewers_paid <- paid_courses_df$reviews
+reviewers_unpaid <- unpaid_courses_df$reviews
+hist(reviewers_paid, col = "red", xlab = "Number of reviews", ylab = "Frequency (number of courses with this number of reviews", main = "Histogram showing reviews for paid vs unpaid courses", breaks = 20, xlim = c(0,1500))
+hist(reviewers_unpaid, col = "blue", add = TRUE)
+legend("topright", c("Paid","Unpaid"), fill = c("red","blue"))
+
+```
+
+The diagram shows that paid courses have a smaller number of subscribers. Some unpaid courses have a slightly greater number of subscribers. This makes sense as anything that is "free" is likely to attract more people.
+
+The diagram shows that paid courses have paid courses have a greater number of reviews, which also makes sense because people are more likely to develop stronger opinions on a product if they are paying for it - so something that is free is likely to attract more reviews.
